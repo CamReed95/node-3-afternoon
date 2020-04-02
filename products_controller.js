@@ -1,8 +1,9 @@
 module.exports = {
     create: (req, res, next) => {
         const dbInstance = req.app.get('db');
+        const { name, description, price, image_url } = req.body
 
-        dbInstance.create_product()
+        dbInstance.create_product([name, description, price, image_url])
         .then( () => res.sendStatus(200))
         .catch( err => {
             res.status(500).send({errorMessage: 'Oops! Something went wrong. Our engineers have been informed!'});
@@ -11,6 +12,7 @@ module.exports = {
 
     getOne: (req, res, next) => {
         const dbInstance = req.app.get('db');
+        const {id} = req.params;
 
         dbInstance.read_product()
         .then( product => res.status(200).send(product))
@@ -22,6 +24,7 @@ module.exports = {
 
     getAll: (req, res, next) => {
         const dbInstance = req.app.get('db');
+        
 
         dbInstance.read_products()
         .then(products => res.status(200).send(products))
@@ -33,6 +36,7 @@ module.exports = {
 
     update: (req, res, next) => {
         const dbInstance = req.app.get('db');
+        const { params, query } = req;
 
         dbInstance.update_product()
         .then( () => res.sendStatus(200))
@@ -44,6 +48,7 @@ module.exports = {
 
     delete: (req, res, next) => {
         const dbInstance = req.app.get('db');
+        const {id} = req.params;
 
         dbInstance.delete_product()
         .then( () => res.sendStatus(200) )
